@@ -205,12 +205,12 @@ A-hello-cmake$ tree
 ├── main.cpp
 ----
 
-All examples in this tutorial will use out-of-source builds.
+教程中的所有示例都将采用外部构建方式构建。
 
 
-# Building the Examples
+# 构建示例
 
-Below is sample output from building this example.
+下面是构建这个示例的输出。
 
 [source,bash]
 ----
