@@ -4,11 +4,11 @@
 
 toc::[]
 
-# Introduction
+# 简介
 
-Shows a very basic hello world example.
+展示一个非常基础的hello world示例。
 
-The files in this tutorial are below:
+本教程目录下的文件结构如下：
 
 ```
 A-hello-cmake$ tree
@@ -17,21 +17,18 @@ A-hello-cmake$ tree
 ├── main.cpp
 ```
 
-  * link:CMakeLists.txt[CMakeLists.txt] - Contains the CMake commands you wish to run
-  * link:main.cpp[main.cpp] - A simple "Hello World" cpp file.
+  * link:CMakeLists.txt[CMakeLists.txt] - 包含想要执行的CMake指令
+  * link:main.cpp[main.cpp] - 一个简单的 "Hello World" cpp文件.
 
-# Concepts
+# 概念
 
 ### CMakeLists.txt
 
-CMakeLists.txt is the file which should store all your CMake commands. When
-cmake is run in a folder it will look for this file and if it does not exist cmake
-will exit with an error.
+CMakeLists.txt里面保存有所有你的CMake指令。当在这个文件夹下运行cmake时，它将会搜索这个文件，如果没有找到则cmake将会退出并报错。
 
-### Minimum CMake version
+### 最低CMake版本指定
 
-When creating a project using CMake, you can specify the minimum version
-of CMake that is supported.
+当采用CMake创建一个项目时，需要指定项目支持的最低的CMake版本。
 
 [source,cmake]
 ----
@@ -39,10 +36,9 @@ cmake_minimum_required(VERSION 3.5)
 ----
 
 
-### Projects
+### 项目
 
-A CMake build can include a project name to make referencing certain
-variables easier when using multiple projects.
+一个CMake构建可以包含一个项目名，以便在使用多个项目时可以很轻松地引用某些变量。
 
 [source,cmake]
 ----
@@ -50,12 +46,9 @@ project (hello_cmake)
 ----
 
 
-### Creating an Executable
+### 创建一个执行文件
 
-The +add_executable()+ command specifies that an executable should be
-build from the specified source files, in this example main.cpp. The
-first argument to the +add_executable()+ function is the name of the
-executable to be built, and the second argument is the list of source files to compile.
++add_executable()+ 命令用来指定一个可执行文件，这个可执行文件是由指定的源文件构建而来（在本示例中是main.cpp）。+add_executable()+ 的第一个参数是需要构建的可执行文件名称，第二个参数是需要参与编译的源文件列表。
 
 [source,cmake]
 ----
@@ -65,37 +58,27 @@ add_executable(hello_cmake main.cpp)
 
 [NOTE]
 ====
-A shorthand that some people use is to have the project name and
-executable name the same. This allows you to specify the CMakeLists.txt
-as follows,
+有一个小技巧：如果想让项目名和可执行文件名相同，可以使用如下方式指定CMakeLists.txt文件。
 
 [source,cmake]
 ----
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.5)
 project (hello_cmake)
 add_executable(${PROJECT_NAME} main.cpp)
 ----
 
-In this example, the +project()+ function, will create a variable
-+${PROJECT_NAME}+ with the value hello_cmake. This can then be passed to
-the +add_executable()+ function to output a 'hello_cmake' executable.
+在这个示例中，+project()+ 函数将会创建一个值为hello_cmake的 +${PROJECT_NAME}+ 变量。这个变量可以传给 +add_executable()+ 函数来生成一个名为'hello_cmake'的可执行文件。
 ====
 
 
-### Binary Directory
+### 二进制目录
 
-The root or top level folder that you run the cmake command from is known as your
-CMAKE_BINARY_DIR and is the root folder for all your binary files.
-CMake supports building and generating your binary files both in-place and also
-out-of-source.
+运行cmake命令的根文件夹或顶层文件夹被称为CMAKE_BINARY_DIR，这个文件夹是所有二进制文件的根文件夹。CMake支持两种构建和生成方式：内部构建（in-place build）和外部构建（out-of-source build），类似于Qt下的shadow build。
 
 
-#### In-Place Build
+#### 内部构建（In-Place Build）
 
-In-place builds generate all temporary build files in the same directory structure
-as the source code. This means that all Makefiles and object files are interspersed
-with your normal code. To create an in-place build target run the cmake command
-in your root directory. For example:
+内部构建生成的所有临时构建文件都和源文件处于同一个目录下。这意味着所有的Makefiles和中间文件都穿插在普通的代码之中。要创建内部构建目标，可以在根目录下运行cmake命令：
 
 [source,bash]
 ----
@@ -153,16 +136,10 @@ A-hello-cmake$ tree
 ----
 
 
-#### Out-of-Source Build
+#### 外部构建（Out-of-Source Build）
 
-Out-of-source builds allow you to create a single build folder that can be anywhere on
-your file system. All temporary build and object files are located in this directory keeping
-your source tree clean. To create an out-of-source build run the cmake command in
-the build folder and point it to the directory with your root CMakeLists.txt file.
-Using out-of-source builds if you want to recreate your cmake environment
-from scratch, you only need to delete your build directory and then rerun cmake.
-
-For example:
+外部构建允许创建一个单独的构建文件夹，放置于系统中的任意位置。所有的临时构建、中间文件都位于这个文件夹下，有效保持源文件目录的整洁。要创建外部构建，可以新建一个build文件夹，之后在文件夹下运行cmake命令，并指定CMakeLists.txt文件所在的路径。
+使用外部构建还有一个好处：当你想重新由源文件生成cmake环境，你只需要删除构建文件加下的所有文件并重新运行cmake即可。
 
 [source,bash]
 ----

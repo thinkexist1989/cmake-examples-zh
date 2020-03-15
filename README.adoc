@@ -1,41 +1,36 @@
 
-= CMake Examples
+= CMake Examples CMAKE示例（中文）
 :toc:
 :toc-placement!:
 
 toc::[]
 
-# Introduction
+# 简介
 
-https://cmake.org/[CMake] is a cross-platform open-source meta-build system which
-can build, test and package software. It can be used to support multiple native build environments including
-make, Apple's xcode and Microsoft Visual Studio.
+https://cmake.org/[CMake] 是一个跨平台的开源元构建系统，能够构建、测试和打包软件。它可以被用于支持多个本地构建环境，包括make，MacOS下的xcode以及Windows下的Visual Studio。
 
-This repository includes some example modern CMake configurations which I have picked up
-when exploring it's usage for various projects. The examples are laid out in a tutorial like format.
-The first examples are very basic and slowly increase in complexity drawing on previous examples to show
-more complex use cases.
+这个仓库包含一些我（ https://github.com/ttroy50/[ttroy50] ）在探索其在不同项目中的用法时挑选的现代CMake配置示例。示例以类似教程的形式列出，从第一非常基础的示例开始，循序渐进，逐渐增加复杂性来展示cmake的高级用法。
 
-These examples have been tested on Ubuntu 16.04 but should work under any Linux system that supports CMake v3.5+.
+这些示例在Ubuntu 16.04上测试通过，但是应该可以在任何支持Cmake v3.5+的Linux系统上运行（很多示例在Windows下也可以运行）
 
-This branch works with the CMake version 3.5 onwards. 
+这个分支需要和Cmake 3.5版本以上一起工作。 
 
-* For examples that use CMake version 2.x see the branch link:https://github.com/ttroy50/cmake-examples/tree/v2-style-includes[v2-style-includes].
-* For examples that use CMake version 3.0 see the branch link:https://github.com/ttroy50/cmake-examples/tree/v3.0-minimum[v3.0-minimum]
+* 使用CMake 2.x版本可以查看这个分支link:https://github.com/ttroy50/cmake-examples/tree/v2-style-includes[v2-style-includes].
+* 使用CMake 3.0版本可以查看这个分支link:https://github.com/ttroy50/cmake-examples/tree/v3.0-minimum[v3.0-minimum]
 
 image:https://travis-ci.org/ttroy50/cmake-examples.svg?branch=master["Build Status", link="https://travis-ci.org/ttroy50/cmake-examples"]
 
-# Requirements
+# 要求
 
-The basic requirements for most examples are:
+大部分例程只需要以下工具：
 
 * CMake v3.5+
 * A c++ compiler (defaults to gcc)
 * make
 
-## Installation on Ubuntu
+## 安装在Ubuntu上
 
-The easiest way to install the above on Ubuntu is as follows
+安装上述要求的工具，最简单的方式就是在Ubuntu上按照以下步骤安装：
 
 [source,bash]
 ----
@@ -43,7 +38,7 @@ $ sudo apt-get install build-essential
 $ sudo apt-get install cmake
 ----
 
-Some specific examples may require other tools including:
+一些特殊的示例可能需要以下工具:
 
 * http://www.boost.org/[boost]
 
@@ -73,9 +68,9 @@ Some specific examples may require other tools including:
 
 ## Docker
 
-Docker containers with all requirements and various versions of CMake are generated to help make testing the examples easier. These are available from the docker hub repository link:https://hub.docker.com/r/matrim/cmake-examples/[matrim/cmake-examples].
+生成了带有所有依赖以及各种CMake版本的Docker容器以帮助简化测试示例。可以从docker hub仓库下载link:https://hub.docker.com/r/matrim/cmake-examples/[matrim/cmake-examples].
 
-To build the full set of cmake-examples test cases you can run:
+要构建完成的cmake-examples测试示例集，可以运行:
 
 [source,bash]
 ----
@@ -86,12 +81,11 @@ cd code
 ./test.sh
 ----
 
-For more details on build and running the docker containers link:here[dockerfiles].
+更多构建和运行docker容器的信息link:here[dockerfiles].
 
-# Other Links
+# 其他链接
 
-There are many CMake tutorials and examples online. The list below includes links
-to some of these which I have found helpful in my CMake journey.
+有许多在线的CMake教程和示例。以下是一些个人感觉比较有帮助的链接。
 
   * https://web.archive.org/web/20160314094326/https://www.kdab.com/~stephen/moderncmake.pdf[Modern CMake Slides]
   * https://rix0r.nl/blog/2015/08/13/cmake-guide/[rix0r Modern CMake Blog]
