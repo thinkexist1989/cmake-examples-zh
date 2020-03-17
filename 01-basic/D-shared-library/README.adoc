@@ -4,13 +4,13 @@
 
 toc::[]
 
-# Introduction
+# 简介
 
-Shows a hello world example which first creates and links a shared library.
+展示一个hello world示例，创建并链接一个共享库。
 
-This also shows how to create an link:https://cmake.org/cmake/help/v3.0/manual/cmake-buildsystem.7.html#alias-targets[alias target]
+示例同样展示了如何创建 link:https://cmake.org/cmake/help/v3.0/manual/cmake-buildsystem.7.html#alias-targets[别名目标(alias target)]
 
-The files in this tutorial are below:
+教程中的文件如下：
 
 ```
 $ tree
@@ -24,19 +24,18 @@ $ tree
     └── main.cpp
 ```
 
-  * link:CMakeLists.txt[] - Contains the CMake commands you wish to run
-  * link:include/shared/Hello.h[] - The header file to include
-  * link:src/Hello.cpp[] - A source file to compile
-  * link:src/main.cpp[] - The source file with main
+  * link:CMakeLists.txt[] - 包含要运行的CMake命令
+  * link:include/shared/Hello.h[] - 包含的头文件
+  * link:src/Hello.cpp[] - 需要编译的源文件
+  * link:src/main.cpp[] - 需要参与编译的源文件（包含main函数）
 
 
-# Concepts
+# 概念
 
-## Adding a Shared Library
+## 添加一个共享库
 
-As with the previous example on static libraries, the +add_library()+ function
-is also used to create a shared library from some source files.
-This is called as follows:
+同上个示例的静态库一样，采用 +add_library()+ 函数从源文件创建一个共享库。
+调用方式如下：
 
 [source,cmake]
 ----
@@ -45,24 +44,22 @@ add_library(hello_library SHARED
 )
 ----
 
-This will be used to create a shared library with the name libhello_library.so with
-the sources passed to the +add_library()+ function.
+这将会创建一个名为libhello_library.so的共享库（SHARED）。
 
-## Alias Target
+## 别名目标
 
-As the name suggests an link:https://cmake.org/cmake/help/v3.0/manual/cmake-buildsystem.7.html#alias-targets[alias target] is an alternative name for a target that can be used instead of the real target name in read-only contexts.
+link:https://cmake.org/cmake/help/v3.0/manual/cmake-buildsystem.7.html#alias-targets[别名目标(alias target)] 是目标的可选别名，可以在只读上下文中代替实际目标名。
 
 [source,cmake]
 ----
 add_library(hello::library ALIAS hello_library)
 ----
 
-As shown below, this allows you to reference the target using the alias name when linking it against other targets.
+如下面所示，别名可以在链接到其他目标时引用。
 
-## Linking a Shared Library
+## 链接到一个共享库
 
-Linking a shared library is the same as linking a static library. When creating your
-executable use the the +target_link_library()+ function to point to your library
+链接到一个共享库和链接到一个静态库相同。当创建可执行文件时，可以使用 +target_link_library()+ 函数指向共享库。
 
 [source,cmake]
 ----
@@ -76,15 +73,15 @@ target_link_libraries(hello_binary
 )
 ----
 
-This tells CMake to link the hello_library against the hello_binary executable using the alias target name.
+这会告知CMake使用目标别名将共享库hello_library链接到可执行文件hello_binary。
 
-An example of this being called by the linker is
+链接器如下调用本示例：
 
 ```
 /usr/bin/c++ CMakeFiles/hello_binary.dir/src/main.cpp.o -o hello_binary -rdynamic libhello_library.so -Wl,-rpath,/home/matrim/workspace/cmake-examples/01-basic/D-shared-library/build
 ```
 
-# Building the Example
+# 构建示例
 
 [source,bash]
 ----
