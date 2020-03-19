@@ -6,10 +6,9 @@ toc::[]
 
 # Introduction
 
-This example shows how to generate a `make install` target to install files and
-binaries on your system. This is based on the previous shared library example.
+本示例展示了如何创建一个`make install`目标，用来在系统中安装普通文件和二进制文件。本示例基于上一个共享库示例开发。
 
-The files in this tutorial are below:
+教程中的文件结构如下：
 
 ```
 $ tree
@@ -25,22 +24,20 @@ $ tree
     └── main.cpp
 ```
 
-  * link:CMakeLists.txt[] - Contains the CMake commands you wish to run
-  * link:cmake-examples.conf[] - An example configuration file
-  * link:include/installing/Hello.h[] - The header file to include
-  * link:src/Hello.cpp[] - A source file to compile
-  * link:src/main.cpp[] - The source file with main
+  * link:CMakeLists.txt[] - 包含要运行的CMake命令
+  * link:cmake-examples.conf[] - 示例配置文件
+  * link:include/installing/Hello.h[] - 需要包含的头文件
+  * link:src/Hello.cpp[] - 需要编译的源文件
+  * link:src/main.cpp[] - 需要参与编译的源文件（包含main函数）
 
-# Concepts
+# 概念
 
-## Installing
+## 安装
 
-CMake offers the ability to add a `make install` target to allow a user to
-install binaries, libraries and other files. The base install location is controlled
-by the variable +CMAKE_INSTALL_PREFIX+ which can be set using ccmake or by calling
-cmake with `cmake .. -DCMAKE_INSTALL_PREFIX=/install/location`
+CMake通过创建`make install`目标来使用户可以安装二进制文件、库文件和其他文件。安装位置的起始位置由变量 +CMAKE_INSTALL_PREFIX+ 控制，
+可以通过ccmake（带界面的cmake，用cmake-gui也行）或者在运行cmake时添加选项 `cmake .. -DCMAKE_INSTALL_PREFIX=/install/location` 来实现。
 
-The files that are installed are controlled by the https://cmake.org/cmake/help/v3.0/command/install.html[+install()+] function.
+文件的安装通过 https://cmake.org/cmake/help/v3.0/command/install.html[+install()+] 函数控制。
 
 [source,cmake]
 ----
@@ -48,8 +45,7 @@ install (TARGETS cmake_examples_inst_bin
     DESTINATION bin)
 ----
 
-Install the binary generated from the target cmake_examples_inst_bin target to
-the destination +${CMAKE_INSTALL_PREFIX}/bin+
+将add_executable生成的可执行文件cmake_examples_inst_bin安装到目标位置 +${CMAKE_INSTALL_PREFIX}/bin+
 
 [source,cmake]
 ----
@@ -57,13 +53,11 @@ install (TARGETS cmake_examples_inst
     LIBRARY DESTINATION lib)
 ----
 
-Install the shared library generated from the target cmake_examples_inst target to
-the destination +${CMAKE_INSTALL_PREFIX}/lib+
+将add_library生成的共享库cmake_examples_inst安装到目标位置 +${CMAKE_INSTALL_PREFIX}/lib+
 
 [NOTE]
 ====
-This may not work on windows. On platforms that have DLL targets you
-may need to add the following
+这在Windows下可能失效。在产生DLL目标的平台上安装时，需要添加以下命令：
 
 [source,cmake]
 ----
@@ -80,8 +74,7 @@ install(DIRECTORY ${PROJECT_SOURCE_DIR}/include/
     DESTINATION include)
 ----
 
-Install the header files for developing against the +cmake_examples_inst+ library
-into the +${CMAKE_INSTALL_PREFIX}/include+ directory.
+安装开发 +cmake_examples_inst+ 共享库所需的头文件到指定位置 +${CMAKE_INSTALL_PREFIX}/include+。
 
 [source,cmake]
 ----
@@ -89,18 +82,16 @@ install (FILES cmake-examples.conf
     DESTINATION etc)
 ----
 
-Install a configuration file to the destination +${CMAKE_INSTALL_PREFIX}/etc+
+安装配置文件到目标位置 +${CMAKE_INSTALL_PREFIX}/etc+
 
-After `make install` has been run, CMake generates an install_manifest.txt file
-which includes details on all installed files.
+在执行`make install`后，CMake将产生一个install_manifest.txt文件，其中包含了安装文件的详细信息。
 
 [NOTE]
 ====
-If you run the `make install` command as root, the install_manifest.txt file will
-be owned by root.
+如果以超级用户root运行`make install`命令，则install_manifest.txt文件的所有者为root。
 ====
 
-# Building the Example
+# 构建示例
 
 [source,bash]
 ----
@@ -164,8 +155,7 @@ Hello Install!
 
 [NOTE]
 ====
-If `/usr/local/lib` is not in your library path you may need to add it to the
-path before running the binary.
+如果`/usr/local/lib`不在你的库目录下，则需要在运行可执行文件之前将其添加到路径中。
 ====
 
 [[extra-notes]]
@@ -176,12 +166,9 @@ Extra Notes
 Overriding the default install location
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-As mentioned the default install location is set from the +CMAKE_INSTALL_PERFIX+,
-which defaults to `/usr/local/`
+安装路径的起始位置 +CMAKE_INSTALL_PERFIX+ 的默认值为`/usr/local/`
 
-If you want to change this default location for all users you can add the
-following code to your top level CMakeLists.txt before adding any binaries or
-libraries.
+如果想要为所有用户改变默认安装路径，可以在加入可执行文件或库前，在顶层CMakeLists.txt文件中加入如下代码：
 
 [source,cmake]
 ----
@@ -191,22 +178,20 @@ if( CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT )
 endif()
 ----
 
-This example sets the default install location to under your build directory.
+这个示例将默认安装路径设置到了你的构建目录下。
 
 [[destdir]]
 DESTDIR
 ^^^^^^^
 
-If you wish to stage your install to confirm that all files are included the
-`make install` target supports the DESTDIR argument.
+如果想要把安装文件暂存起来，以便于确认是否所有的目标都被包含在`make install`之中，可以利用DESTDIR参数。
+（其实就是把${CMAKE_INSTALL_PREFIX}再放到统一的文件夹下）
 
 ```
 make install DESTDIR=/tmp/stage
 ```
 
-This will create the install path `${DESTDIR}/${CMAKE_INSTALL_PREFIX}` for all
-your installation files. In this example, it would install all files under the
-path `/tmp/stage/usr/local`
+这将会为所有安装文件创建一个安装路径`${DESTDIR}/${CMAKE_INSTALL_PREFIX}`。在这个示例中，所有的文件都将安装到`/tmp/stage/usr/local`下。
 
 ```
 $ tree /tmp/stage
@@ -225,10 +210,9 @@ $ tree /tmp/stage
 Uninstall
 ^^^^^^^^^
 
-By default CMake does not add a `make uninstall` target. For details on how to generate
-an uninstall target see this https://cmake.org/Wiki/CMake_FAQ#Can_I_do_.22make_uninstall.22_with_CMake.3F[FAQ]
+默认情况下CMake没有添加`make uninstall`目标。如何生成uninstall目标可以参考 https://cmake.org/Wiki/CMake_FAQ#Can_I_do_.22make_uninstall.22_with_CMake.3F[FAQ]
 
-For an easy way to remove the files from this example, you can use:
+一个移除本示例所有安装文件的简单方式，可以使用：
 
 ```
 sudo xargs rm < install_manifest.txt
