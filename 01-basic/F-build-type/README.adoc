@@ -4,20 +4,18 @@
 
 toc::[]
 
-# Introduction
+# 简介
 
-CMake has a number of built in build configurations which can be used to compile
-your project. These specify the optimization levels and if debug information is
-to be included in the binary.
+CMake在编译项目时有很多构建配置可以选择。他们可以指定优化等级，以及是否在二进制文件中包含调试信息。
 
-The levels provided are:
+这些等级包括：
 
-  * Release - Adds the `-O3 -DNDEBUG` flags to the compiler
-  * Debug - Adds the `-g` flag
-  * MinSizeRel - Adds `-Os -DNDEBUG`
-  * RelWithDebInfo - Adds `-O2 -g -DNDEBUG` flags
+  * Release - 添加 `-O3 -DNDEBUG` 标志到编译器
+  * Debug - 添加 `-g` 标志
+  * MinSizeRel - 添加 `-Os -DNDEBUG` 标志
+  * RelWithDebInfo - 添加 `-O2 -g -DNDEBUG` 标志
 
-The files in this tutorial are below:
+教程中的文件结构如下：
 
 ```
 $ tree
@@ -26,33 +24,31 @@ $ tree
 ├── main.cpp
 ```
 
-  * link:CMakeLists.txt[] - Contains the CMake commands you wish to run
-  * link:main.cpp[] - The source file with main
+  * link:CMakeLists.txt[] - 包含要运行的CMake命令
+  * link:main.cpp[] - 需要参与编译的源文件（包含main函数）
 
-# Concepts
+# 概念
 
-## Set Build Type
+## 设置构建类型
 
-The build type can be set using the following methods.
+构建类型可以通过如下方式设置：
 
-  - Using a gui tool such as ccmake / cmake-gui
+  - 使用界面工具 ccmake / cmake-gui
 
 image::cmake-gui-build-type.png[cmake-gui build type]
 
-  - Passing into cmake
+  - 调用 cmake 时传入参数
 
 [source,cmake]
 ----
 cmake .. -DCMAKE_BUILD_TYPE=Release
 ----
 
-## Set Default Build Type
+## 设置默认的构建类型
 
-The default build type provided by CMake is to include no compiler flags for
-optimization. For some projects you may want to
-set a default build type so that you do not have to remember to set it.
+CMake提供的默认构建类型不包含用于优化的编译标志。在某些项目中可能需要设置一个默认的构建类型，从而无需主动设置它。
 
-To do this you can add the following to your top level CMakeLists.txt
+可以在顶层CMakeLists.txt文件中加入如下内容：
 
 [source,cmake]
 ----
@@ -65,7 +61,7 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 ----
 
-# Building the Example
+# 构建示例
 
 [source,bash]
 ----
