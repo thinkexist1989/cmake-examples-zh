@@ -4,17 +4,11 @@
 
 toc::[]
 
-# Introduction
+# 简介
 
-Nearly all non-trivial projects will have a requirement for including third party
-libraries, headers, or programs. CMake has support for finding the path to these tools using
-the `find_package()` function. This will search for CMake modules in the format
-"FindXXX.cmake" from the list of folders in `CMAKE_MODULE_PATH`. On linux the
-default search path will include `/usr/share/cmake/Modules`. On my system this
-includes support for approximately 142 common third party libraries.
+几乎所有重要的项目都需要包含第三方的库、头文件以及程序。CMake可以利用 `find_package()` 函数来搜索这些第三方工具的路径。这个函数将会从`CMAKE_MODULE_PATH`中所列出的文件夹中寻找格式为"FindXXX.cmake"的CMake模块。在Linux中，默认的搜索路径包括`/usr/share/cmake/Modules`。在我的系统中，包含了大概142个常用的第三方库的支持。
 
-
-The files in this tutorial are below:
+教程的文件结构如下：
 
 ```
 $ tree
@@ -23,24 +17,22 @@ $ tree
 ├── main.cpp
 ```
 
-  * link:CMakeLists.txt[] - Contains the CMake commands you wish to run
-  * link:main.cpp[] - The source file with main
+  * link:CMakeLists.txt[] - 包含要运行的CMake指令
+  * link:main.cpp[] - 需要参与编译的源文件（包含main函数）
 
-# Requirements
+# 需求
 
-This example requires the boost libraries to be installed in a default system
-location.
+这个示例需要在默认位置安装boost库。
 
-# Concepts
+$ sudo apt-get install libboost-all-dev
 
-## Finding a Package
+# 概念
 
-As mentioned above the `find_package()` function will search for CMake modules in the formant
-"FindXXX.cmake" from the list of folders in `CMAKE_MODULE_PATH`. The exact
-format of the arguments to `find_package` will depend on the module you are looking
-for. This is typically documented at the top of the `FindXXX.cmake` file.
+## 寻找一个功能包
 
-A basic example of finding boost is below:
+如上所述，`find_package()` 函数将会从`CMAKE_MODULE_PATH`中所列出的文件夹中寻找格式为"FindXXX.cmake"的CMake模块。`find_package()` 中所需的参数格式由所需的模块决定，这通常记录在 `FindXXX.cmake` 文件的顶部。
+
+一个寻找boost的简单示例如下：
 
 [source,cmake]
 ----
@@ -49,21 +41,19 @@ find_package(Boost 1.46.1 REQUIRED COMPONENTS filesystem system)
 
 The arguments are:
 
-  * Boost - Name of the library. This is part of used to find the module file FindBoost.cmake
-  * 1.46.1 - The minimum version of boost to find
-  * REQUIRED - Tells the module that this is required and to fail it it cannot be found
-  * COMPONENTS - The list of libraries to find.
+  * Boost - 库名称，这是要寻找的模块名称FindBoost.cmake的一部分
+  * 1.46.1 - 所需boost库的最低版本
+  * REQUIRED - 告知CMake这个模块使必须的，如果找不到就提示失败
+  * COMPONENTS - 要查找的库列表（Boost是一个库集合，用COMPONENTS指定具体查找的子库）
 
-Boost includes can take more arguments and also make use of other variables.
-More complex setups are provided in later examples.
+Boost的引入可以接收更多参数，并且可以使用其他变量。后面的示例提供了更复杂的配置。
 
 
-## Checking if the package is found
+## 检查功能包是否找到
 
-Most included packages will set a variable `XXX_FOUND`, which can used to check
-if the package is available on the system.
+大多数引入的功能包将会设置变量 `XXX_FOUND`，用来检查功能包是否可用。
 
-In this example the variable is `Boost_FOUND`:
+在本示例中，这个变量是 `Boost_FOUND`：
 
 [source,cmake]
 ----
@@ -75,39 +65,33 @@ else()
 endif()
 ----
 
-## Exported Variables
+## 导出变量
 
-After a package is found it will often export variables which can inform the user
-where to find the library, header, or executable files. Similar to the `XXX_FOUND`
-variable, these are package specific and are typically documented at the top of the
-`FindXXX.cmake` file.
+当功能包被找到后，会导出变量来通知用户其中的库、头文件以及可执行文件的位置。类似于 `XXX_FOUND` 变量，这些变量特定于功能包，通常记录在 `FindXXX.cmake` 文件的顶部。
 
-The variables exported in this example include:
+本示例中导出变量包括：
 
-  * `Boost_INCLUDE_DIRS` - The path to the boost header files.
+  * `Boost_INCLUDE_DIRS` - boost的头文件路径。
 
-In some cases you can also check these variables by examining the cache using
-ccmake or cmake-gui.
+在某些条件下，可以通过ccmake或者cmake-gui检查cache来检查这些变量。
 
-## Alias / Imported targets
+## 别名/导入目标
 
-Most modern CMake libraries link:https://cmake.org/cmake/help/v3.6/prop_tgt/IMPORTED.html#prop_tgt:IMPORTED[export] +ALIAS+ targets in their module files. 
-The benefit of imported targets are that they can also populate include directories and linked libraries.
+大多数现代CMake库在其模块文件中 link:https://cmake.org/cmake/help/v3.6/prop_tgt/IMPORTED.html#prop_tgt:IMPORTED[导出（export）] +别名（ALIAS）+ 目标。
 
-For example, starting from v3.5+ of CMake, the
-Boost module supports this. Similar to using your own ALIAS target for libraires, an +ALIAS+ in a module can make referencing found targets easier.
+导入目标的优势是，可以同事填充包含目录和链接库。
 
-In the case of Boost, all targets are exported using the `Boost::` identifier and then the name 
-of the subsystem. For example you can use:
+举例来说，Boost模块从v3.5+版本的CMake开始支持别名/导入目标。类似于使用自定义的ALIAS目标（`add_library(hello::library ALIAS hello_library)`），模块中的 +ALIAS+ 可以使查找目标更加容易。
+
+在Boost中，所有目标在导出时都加入了`Boost::`标识符，后面紧跟子系统的名称。例如：
 
   * `Boost::boost` for header only libraries
   * `Boost::system` for the boost system library.
   * `Boost::filesystem` for filesystem library.
 
-As with your own targets, these targets include their dependencies, so linking against
-`Boost::filesystem` will automatically add `Boost::boost` and `Boost::system` dependencies.
+与自己定义的目标一样，这个目标也包含他们的依赖，因此当链接到 `Boost::filesystem` 时将会自动添加 `Boost::boost` and `Boost::system` 依赖。
 
-To link against an imported target you can use the following:
+为了链接到导入目标，可以使用如下方式（感觉方便之处是不用手动添加各种头文件和库的变量）：
 
 [source,cmake]
 ----
@@ -117,15 +101,14 @@ To link against an imported target you can use the following:
   )
 ----
 
-## Non-alias targets
+## 无别名目标
 
-While most modern libraries use imported targets, not all modules have been updated. In the
-case where a library hasn't been updated you will often find the following variables available:
+尽管绝大多数现代库都采用了导入目标，但并不是所有模块都更新了。在一些库并未更新的情况下，将会找到如下变量：
 
-  * xxx_INCLUDE_DIRS - A varialble pointing to the include directory for the library.
-  * xxx_LIBRARY - A variable pointing to the library path.
+  * xxx_INCLUDE_DIRS - 指向库包含路径的变量
+  * xxx_LIBRARY - 指向库路径的变量
 
-These can then be added to your +target_include_directories+ and +target_link_libraries+ as:
+添加变量到 +target_include_directories+ 和 +target_link_libraries+ 中：
 
 [source,cmake]
 ----
@@ -142,7 +125,7 @@ target_link_libraries( third_party_include
 )
 ----
 
-# Building the Example
+# 构建示例
 
 [source,bash]
 ----
