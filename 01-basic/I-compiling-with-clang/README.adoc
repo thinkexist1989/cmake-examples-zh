@@ -4,13 +4,11 @@
 
 toc::[]
 
-# Introduction
+# 简介
 
-When building with CMake it is possible to set the C and C++ compiler. This example
-is the same as the link:../A-hello-cmake[hello-cmake] example except that it shows the most basic
-method of changing the compiler from the default gcc to http://clang.llvm.org/[clang].
+当使用CMake构建时可以选择C和C++编译器。这个示例与 link:../A-hello-cmake[hello-cmake]一样，除了使用了最基本的方式将编译器从默认的gcc改变为 http://clang.llvm.org/[clang]。
 
-The files in this tutorial are below:
+教程中的文件结构如下：
 
 ```
 $ tree
@@ -19,46 +17,42 @@ $ tree
 ├── main.cpp
 ```
 
-  * link:CMakeLists.txt[] - Contains the CMake commands you wish to run
-  * link:main.cpp[] - A simple "Hello World" cpp file.
+  * link:CMakeLists.txt[] - 包含要运行的CMake指令
+  * link:main.cpp[] - 需要参与编译的源文件（包含main函数）
 
-# Concepts
+# 概念
 
-### Compiler Option
+### 编译选项
 
-CMake exposes options to control the programs used to compile and link your code. These
-programs include:
+CMake提供了选项来控制编译、链接你代码所用的程序。这些程序包括：
 
-  * CMAKE_C_COMPILER - The program used to compile c code.
-  * CMAKE_CXX_COMPILER - The program used to compile c++ code.
-  * CMAKE_LINKER - The program used to link your binary.
-
-[NOTE]
-====
-In this example clang-3.6 is installed via the command `sudo apt-get install clang-3.6`
-====
+  * CMAKE_C_COMPILER - 编译c代码的程序
+  * CMAKE_CXX_COMPILER - 编译c++代码的程序
+  * CMAKE_LINKER - 链接器
 
 [NOTE]
 ====
-This is the most basic and easiest way to invoke clang. Future examples will show better
-ways to invoke the compiler.
+在本示例中需要安装 clang-3.6， `sudo apt-get install clang-3.6`
+====
+
+[NOTE]
+====
+这是调用clang最基础、最简单的方式。以后的示例中将会展示调用clang更好的方式。
 ====
 
 
-### Setting Flags
+### 设置标志
 
-As described in the link:../F-build-type[Build Type] example, you can set CMake options
-using either a cmake gui or by passing from the command line.
+正如 link:../F-build-type[Build Type]示例所示，可以使用cmake gui或者命令行来设置CMake选项。
 
-Below is an example of passing the compiler via the command line.
+下面是利用命令行设置编译器的例子：
 
 [source,cmake]
 ----
 cmake .. -DCMAKE_C_COMPILER=clang-3.6 -DCMAKE_CXX_COMPILER=clang++-3.6
 ----
 
-After setting these options when your run `make` clang will be used to compile your binary. This
-can be seen from the following lines in the make output.
+当设置完这些选项之后，当运行 `make` 时，将会采用clang来编译你的二进制文件。可以从make输出看到这样的信息：
 
 [source,bash]
 ----
@@ -68,11 +62,9 @@ Linking CXX executable hello_cmake
 /usr/bin/clang++-3.6       CMakeFiles/hello_cmake.dir/main.cpp.o  -o hello_cmake -rdynamic
 ----
 
+# 构建示例
 
-
-# Building the Examples
-
-Below is sample output from building this example.
+如下是构建示例的输出。
 
 [source,bash]
 ----
