@@ -4,11 +4,11 @@
 
 toc::[]
 
-# Introduction
+# 简介
 
-This example shows how to set the C++ standard using the `target_compile_features` function. This is available since CMake v3.1
+本示例展示如何利用`target_compile_features`函数来设置C++标准。从CMake v3.1开始支持此特性。
 
-The files in this tutorial are below:
+教程中的文件结构如下：
 
 ```
 A-hello-cmake$ tree
@@ -17,32 +17,32 @@ A-hello-cmake$ tree
 ├── main.cpp
 ```
 
-  * link:CMakeLists.txt[CMakeLists.txt] - Contains the CMake commands you wish to run
-  * link:main.cpp[main.cpp] - A simple "Hello World" cpp file targeting C++11.
+  * link:CMakeLists.txt[CMakeLists.txt] - 要运行的CMake命令
+  * link:main.cpp[main.cpp] - 利用C++11特性编写的简单cpp文件
 
-# Concepts
+# 概念
 
-## Using target_compile_features
+## 使用target_compile_features
 
-Calling the link:https://cmake.org/cmake/help/v3.1/command/target_compile_features.html[target_compile_features] function on a target will look at the passed in feature and determine the correct compiler flag to use for your target.
+调用 link:https://cmake.org/cmake/help/v3.1/command/target_compile_features.html[target_compile_features] 函数将会查看传入的特性，并且决定编译目标所用的正确标志。
 
 [source,cmake]
 ----
 target_compile_features(hello_cpp11 PUBLIC cxx_auto_type)
 ----
 
-As with other `target_*` functions, you can specify the scope of the feature for the selected target. This populates the link:https://cmake.org/cmake/help/v3.1/prop_tgt/INTERFACE_COMPILE_FEATURES.html#prop_tgt:INTERFACE_COMPILE_FEATURES[INTERFACE_COMPILE_FEATURES] property for the target.
+正如其他`target_*`函数一样，可以对选定的目标指定特性的作用域。这将把the link:https://cmake.org/cmake/help/v3.1/prop_tgt/INTERFACE_COMPILE_FEATURES.html#prop_tgt:INTERFACE_COMPILE_FEATURES[INTERFACE_COMPILE_FEATURES] 属性传入目标。
 
-The list of available features can be found from the link:https://cmake.org/cmake/help/v3.1/variable/CMAKE_CXX_COMPILE_FEATURES.html#variable:CMAKE_CXX_COMPILE_FEATURES[CMAKE_CXX_COMPILE_FEATURES] variable. You can obtain a list of the available features using the following code:
+可用的特性列表可以在 link:https://cmake.org/cmake/help/v3.1/variable/CMAKE_CXX_COMPILE_FEATURES.html#variable:CMAKE_CXX_COMPILE_FEATURES[CMAKE_CXX_COMPILE_FEATURES] 变量中找到，可以通过如下代码获得可用特性的列表：
 
 [source,cmake]
 ----
 message("List of compile features: ${CMAKE_CXX_COMPILE_FEATURES}")
 ----
 
-# Building the Examples
+# 构建示例
 
-Below is sample output from building this example.
+下面是构建此示例的输出。
 
 [source,bash]
 ----

@@ -4,17 +4,15 @@
 
 toc::[]
 
-# Introduction
+# 简介
 
-This example shows how to setup a CMake project that includes sub-projects. The
-top level CMakeLists.txt calls the CMakeLists.txt in the sub directories to
-create the following:
+这个示例展示了如何设置一个包含子项目的CMake项目。顶层的CMakeLists.txt通过调用子目录下的CMakeLists.txt文件生成如下：
 
-  * sublibrary1 - A static library
-  * sublibrary2 - A header only library
-  * subbinary - An executable
+  * sublibrary1 - 一个静态库
+  * sublibrary2 - 一个仅有头文件的库
+  * subbinary - 一个可执行文件
 
-The files included in this example are:
+教程中的文件结构如下：
 
 ```
 $ tree
@@ -37,35 +35,32 @@ $ tree
             └── sublib2.h
 ```
 
-  * link:CMakeLists.txt[] - Top level CMakeLists.txt
-  * link:subbinary/CMakeLists.txt[] - to make the executable
-  * link:subbinary/main.cpp[] - source for the executable
-  * link:sublibrary1/CMakeLists.txt[] - to make a static library
+  * link:CMakeLists.txt[] - 顶层的CMakeLists.txt
+  * link:subbinary/CMakeLists.txt[] - 用于编译可执行文件
+  * link:subbinary/main.cpp[] - 可执行文件源文件
+  * link:sublibrary1/CMakeLists.txt[] - 用于编译静态库
   * link:sublibrary1/include/sublib1/sublib1.h[]
   * link:sublibrary1/src/sublib1.cpp[]
-  * link:sublibrary2/CMakeLists.txt[] - to setup header only library
+  * link:sublibrary2/CMakeLists.txt[] - 用于设置仅有头文件的库
   * link:sublibrary2/include/sublib2/sublib2.h[]
 
 [TIP]
 ====
-In this example I have moved the header files to a subfolder under each projects +include+
-directory, while leaving the target include as the root +include+ folder. This is a good idea to prevent 
-filename clashes because you have to include a file like below:
+在本示例中，将所有的头文件都放置在每一个项目对应的 +include+ 文件夹下的子文件夹中，而将目标的include保留为根目录下的 +include+ 文件夹。 这是一个避免文件名冲突很好的方法，因此你必须使用如下方式包含头文件：
 [source,cpp]
 ----
 #include "sublib1/sublib1.h"
 ----
 
-This also means that if you install your library for other users the default install location would be
+这同样意味着当你将你的库安装到其他用户时，默认安装位置为
 +/usr/local/include/sublib1/sublib1.h+.
 ====
 
-# Concepts
+# 概念
 
-## Adding a Sub-Directory
+## 添加一个子目录
 
-A CMakeLists.txt file can include and call sub-directories which include a CMakeLists.txt
-files.
+一个CMakeLists.txt文件可以包含并调用包含CmakeLists.txt的子目录。
 
 [source,cmake]
 ----
@@ -74,12 +69,9 @@ add_subdirectory(sublibrary2)
 add_subdirectory(subbinary)
 ----
 
-## Referencing Sub-Project Directories
+## 引用子项目目录
 
-When a project is created using the `project()` command, CMake will automatically
-create a number of variables which can be used to reference details about the project.
-These variables can then be used by other sub-projects or the main project. For exampe,
-to reference the source directory for a different project you can use.
+当使用 `project()` 的命令创建项目时， CMake将同时自动创建许多跟项目信息相关的变量。这些变量可以被主项目或其他子项目使用。举例来说，为了引用不同项目的源文件目录，可以使用如下变量：
 
 [source,cmake]
 ----
@@ -87,44 +79,36 @@ to reference the source directory for a different project you can use.
     ${sublibrary2_SOURCE_DIR}
 ----
 
-The variables created by CMake include:
+CMake创建的变量包括：
 
 [cols=",",options="header",]
 |=======================================================================
-|Variable |Info
-|PROJECT_NAME | The name of the project set by the current `project()`.
+| 变量 | 信息
+|PROJECT_NAME | 由当前`project()`产生的项目名称.
 
-|CMAKE_PROJECT_NAME |the name of the first project set by the `project()`
-command, i.e. the top level project.
+|CMAKE_PROJECT_NAME | 由第一个项目 `project()` 设置的项目名称，例如顶层的项目
 
-|PROJECT_SOURCE_DIR |The source director of the current project.
+|PROJECT_SOURCE_DIR | 当前项目的源目录
 
-|PROJECT_BINARY_DIR |The build directory for the current project.
+|PROJECT_BINARY_DIR | 当前项目的构建目录
 
-|name_SOURCE_DIR | The source directory of the project called "name".
-In this example the source directories created would be `sublibrary1_SOURCE_DIR`,
-`sublibrary2_SOURCE_DIR`, and `subbinary_SOURCE_DIR`
+|name_SOURCE_DIR | 名叫"name"的项目的源目录。在本示例中创建的源目录包括 `sublibrary1_SOURCE_DIR`，`sublibrary2_SOURCE_DIR` 和 `subbinary_SOURCE_DIR`
 
-|name_BINARY_DIR | The binary directory of the project called "name".
-In this example the binary directories created would be `sublibrary1_BINARY_DIR`,
-`sublibrary2_BINARY_DIR`, and `subbinary_BINARY_DIR`
+|name_BINARY_DIR | 名叫"name"的项目的构建目录。在本示例中创建的源目录包括`sublibrary1_BINARY_DIR`，
+`sublibrary2_BINARY_DIR` 和 `subbinary_BINARY_DIR`
 
 |=======================================================================
 
-## Header only Libraries
+## 头文件库
 
-If you have a library that is created as a header only library, cmake supports the +INTERFACE+
-target to allow creating a target without any build output. More details can be found from
-link:https://cmake.org/cmake/help/v3.4/command/add_library.html#interface-libraries[here]
+如果有一个头文件库， cmake提供 +INTERFACE+ 目标来创建一个不包含任何构建输出的目标。跟多细节可以查看 link:https://cmake.org/cmake/help/v3.4/command/add_library.html#interface-libraries[here]
 
 [source,cmake]
 ----
 add_library(${PROJECT_NAME} INTERFACE)
 ----
 
-When creating the target you can also include directories for that target using
-the +INTERFACE+ scope. The +INTERFACE+ scope is use to make target requirements that are used in any Libraries
-that link this target but not in the compilation of the target itself.
+在创建目标时，还可以使用 +INTERFACE+ 作用域来包含目录。+INTERFACE+ 作用域用于生成可以在任何链接到该目标的库中使用的目标依赖，但不在目标本身的编译中。
 
 [source,cmake]
 ----
@@ -134,12 +118,9 @@ target_include_directories(${PROJECT_NAME}
 )
 ----
 
-## Referencing Libraries from Sub-Projects
+## 从子项目引用库
 
-If a sub-project creates a library, it can be referenced by other projects by
-calling the name of the project in the `target_link_libraries()` command. This
-means that you don't have to reference the full path of the new library and it
-is added as a dependency.
+如果子项目创建一个库，那么这个库可以被其他项目所引用，通过在 `target_link_libraries()` 调用项目名称。这意味着您不必引用新库的完整路径，同时还可以将其作为依赖项添加。
 
 [source,cmake]
 ----
@@ -149,10 +130,9 @@ target_link_libraries(subbinary
 )
 ----
 
-Alternatively, you can create an alias target which allows you to reference the
-target in read only contexts.
+或者，可以创建一个别名目标，该目标允许引用在只读上下文中设置目标。
 
-To create an alias target run:
+为了创建别名目标，可以运行：
 
 [source,cmake]
 ----
@@ -160,7 +140,7 @@ add_library(sublibrary2)
 add_library(sub::lib2 ALIAS sublibrary2)
 ----
 
-To reference the alias, just it as follows:
+可通过如下方式引用别名：
 [source,cmake]
 ----
 target_link_libraries(subbinary
@@ -168,19 +148,13 @@ target_link_libraries(subbinary
 )
 ----
 
-## Include directories from sub-projects
+## 子项目的包含目录
 
-When adding the libraries from the sub-projects, starting from cmake v3, there is
-no need to add the projects include directories in the include directories of the
-binary using them.
+从cmake v3开始，当从子项目中添加库时，不需要在包含目录中添加项目的包含目录。
 
-This is controlled by the scope in the `target_include_directories()` command when creating
-the libraries. In this example because the subbinary executable links the sublibrary1
-and sublibrary2 libraries it will automatically include the `${sublibrary1_SOURCE_DIR}/inc`
-and `${sublibrary2_SOURCE_DIR}/inc` folders as they are exported with the
- +PUBLIC+ and +INTERFACE+ scopes of the libraries.
+这是由创建库时`target_include_directories()`命令所使用的作用域控制的。在本示例中，subbinary的可执行文件链接了两个库：sublibrary1和sublibrary2。这将会同时自动包含 `${sublibrary1_SOURCE_DIR}/inc` 和 `${sublibrary2_SOURCE_DIR}/inc` 两个文件夹。这是由于这两个库的`target_include_directories()`作用域为 +PUBLIC+ 和 +INTERFACE+ 。
 
-# Building the example
+# 构建示例
 
 [source,bash]
 ----

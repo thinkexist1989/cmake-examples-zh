@@ -1,9 +1,8 @@
 = Basic Examples
 
-The basic examples in this directory show how the setup a CMake project,
-set compile flags, create and link executables and libraries, and install them.
+基础示例展示了如何设置CMake项目、设置编译标志，创建并链接可执行文件和库，并且安装他们。
 
-The examples included are
+示例包括：
 
   - link:A-hello-cmake[hello-cmake]. A hello world example.
   - link:B-hello-headers[hello-headers]. A slightly more complicated hello world example, using separate source and include folders.

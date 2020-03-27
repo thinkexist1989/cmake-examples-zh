@@ -4,11 +4,11 @@
 
 toc::[]
 
-# Introduction
+# 简介
 
-This example shows how to set the C++ standard using the `CMAKE_CXX_STANDARD` variable. This is available since CMake v3.1
+本示例展示如何使用`CMAKE_CXX_STANDARD`变量来设置C++标准，从CMake v3.1开始支持此特性。
 
-The files in this tutorial are below:
+教程中的文件结构如下：
 
 ```
 A-hello-cmake$ tree
@@ -17,26 +17,25 @@ A-hello-cmake$ tree
 ├── main.cpp
 ```
 
-  * link:CMakeLists.txt[CMakeLists.txt] - Contains the CMake commands you wish to run
-  * link:main.cpp[main.cpp] - A simple "Hello World" cpp file targeting C++11.
+  * link:CMakeLists.txt[CMakeLists.txt] - 包含要运行的CMake命令
+  * link:main.cpp[main.cpp] - 利用C++11特性编写的简单cpp文件
 
-# Concepts
+# 概念
 
-## Using CXX_STANDARD property
+## 使用CXX_STANDARD属性
 
-Setting the link:https://cmake.org/cmake/help/v3.1/variable/CMAKE_CXX_STANDARD.html[CMAKE_CXX_STANDARD] variable causes the `CXX_STANDARD` property on all targets. This causes CMake to set the appropriate flag at compille time.
-
+通过设置 link:https://cmake.org/cmake/help/v3.1/variable/CMAKE_CXX_STANDARD.html[CMAKE_CXX_STANDARD] 变量将`CXX_STANDARD`属性传递给所有目标。这将使CMake在编译时来设置合适的标志。
 
 [NOTE]
 ====
-The `CMAKE_CXX_STANDARD` variable falls back to the closest appropriate standard without a failure. For example, if you request `-std=gnu++11` you may end up with `-std=gnu++0x`.
+`CMAKE_CXX_STANDARD`变量将会回滚到最近的、合适的标准，不会返回失败。举例来说，如果请求请求`-std=gnu++11`，可能会得到`-std=gnu++0x`。
 
-This can result in an unexpected failure at compile time.
+这将会在编译时导致意外失败。
 ====
 
-# Building the Examples
+# 构建示例
 
-Below is sample output from building this example.
+下面是构建此示例的输出。
 
 [source,bash]
 ----

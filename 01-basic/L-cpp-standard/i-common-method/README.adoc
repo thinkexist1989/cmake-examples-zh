@@ -4,11 +4,11 @@
 
 toc::[]
 
-# Introduction
+# 简介
 
-This example shows a common method to set the C++ Standard. This can be used with most versions of CMake. However, if you are targeting a recent version of CMake there are more convenient methods available.
+本示例展示了一种设置c++标准的通用方法。这可以用于大多数版本的CMake。但是，如果您的目标是CMake的最新版本，则可以使用更方便的方法。
 
-The files in this tutorial are below:
+教程中的文件结构如下：
 
 ```
 A-hello-cmake$ tree
@@ -17,16 +17,17 @@ A-hello-cmake$ tree
 ├── main.cpp
 ```
 
-  * link:CMakeLists.txt[CMakeLists.txt] - Contains the CMake commands you wish to run
-  * link:main.cpp[main.cpp] - A simple "Hello World" cpp file targeting C++11.
+  * link:CMakeLists.txt[CMakeLists.txt] - 包含要运行的CMake命令
+  * link:main.cpp[main.cpp] - A simple "Hello World" cpp file targeting C++11. 一个利用C++11特性编写的简单的"Hello World"源文件
 
-# Concepts
+# 概念
 
-## Checking Compile flags
+## 检查编译标志
 
-CMake has support for attempting to compile a program with any flags you pass into the function `CMAKE_CXX_COMPILER_FLAG`. The result is then stored in a variable that you pass in.
+CMake可以尝试使用任何标志来编译程序，并将结果传给`CMAKE_CXX_COMPILER_FLAG`函数，并存储在传入的变量中。
+使用传递给函数“CMAKE_CXX_COMPILER_FLAG”的任何标志来编译程序。然后将结果存储在传入的变量中。
 
-For example:
+举例来说：
 
 [source,cmake]
 ----
@@ -34,13 +35,13 @@ include(CheckCXXCompilerFlag)
 CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
 ----
 
-This example will attempt to compile a program with the flag `-std=c++11` and store the result in the variable `COMPILER_SUPPORTS_CXX11`.
+这个示例将会使用`-std=c++11`标志尝试编译一个程序，并且将结果存储在变量`COMPILER_SUPPORTS_CXX11`中。
 
-The line `include(CheckCXXCompilerFlag)` tells CMake to include this function to make it available for use.
+`include(CheckCXXCompilerFlag)` 告知CMake来包含此函数，以便可以使用CHECK_CXX_COMPILER_FLAG()。
 
-## Adding the flag
+## 添加标志
 
-Once you have determined if the compile supports a flag, you can then use the link:../../G-compile-flags/[standard cmake methods] to add this flag to a target. In this example we use the `CMAKE_CXX_FLAGS` to propegate the flag to all targets .
+一旦确定编译器是否支持一个标志，便可以利用 link:../../G-compile-flags/[standard cmake methods] 来将标志添加到目标。 在本示例中，可以使用 `CMAKE_CXX_FLAGS` 将标志传入所有目标中。
 
 [source,cmake]
 ----
@@ -53,11 +54,12 @@ else()
 endif()
 ----
 
-The above example only checks for the gcc version of the compile flags and supports fallback from C+\+11 to the pre-standardisation C+\+0x flag. In real usage you may want to check for C++14, or add support for different methods of setting the compile, e.g. `-std=gnu++11`
 
-# Building the Examples
+上面的示例仅检查编译标志的gcc版本，并支持从C+\+11回滚到预标准化的C+\+0x标志。在实际使用中，您可能需要检查C++14或者添加对设置编译的不同方法的支持，例如`-std=gnu++11`
 
-Below is sample output from building this example.
+# 构建示例
+
+下面是构建此示例的输出。
 
 [source,bash]
 ----

@@ -1,9 +1,7 @@
 = Sub-Project Examples
 
-Many large projects are made up of different libraries and binaries. These
-can be organised into multiple folders and sub-projects to ease development.
+很多大型的项目是由不同的库和二进制文件组成的。这些文件可以被放置在多个文件夹和子项目中去，方便开发。
 
-The examples included are
+本示例包括：
 
-  - link:A-basic[basic] - This basic example includes a static library, a header only library
-  and an executable
+  - link:A-basic[basic] - 此基础示例包括一个静态库、一个有头文件的库和一个可执行文件
