@@ -4,13 +4,12 @@
 
 toc::[]
 
-# Introduction
+# 简介
 
-During the call to cmake it is possible to create files that use variables from
-the CMakeLists.txt and cmake cache. During CMake generation the file is copied to a
-new location and any cmake variables are replaced.
 
-The files in this tutorial are below:
+在调用cmake期间，可以创建使用了CMakeLists.txt和cmake cache变量的文件。在CMake生成时，将会把这些文件拷贝到新位置并将所有cmake变量替换。
+
+教程中的文件结构如下：
 
 ```
 $ tree
@@ -21,17 +20,16 @@ $ tree
 ├── ver.h.in
 ```
 
-  * link:CMakeLists.txt[] - Contains the CMake commands you wish to run
-  * link:main.cpp[] - The source file with main
-  * link:path.h.in[] - File to contain a path to the build directory
-  * link:ver.h.in[] - File to contain the version of the project
+  * link:CMakeLists.txt[] - 包含要运行的CMake命令
+  * link:main.cpp[] - 需要参与编译的源文件（包含main函数）
+  * link:path.h.in[] - 包含了构建目录路径变量的文件
+  * link:ver.h.in[] - 包含了项目版本变量的文件
 
-# Concepts
+# 概念
 
-## Configure Files
+## 配置文件
 
-To do variable substitution in a file you can use the `configure_file()` function
-in CMake. This core arguments for this function are source file and destination file.
+可以使用`configure_file()`函数在CMake中进行变量替换。这个函数的核心参数是源文件与目标文件。
 
 [source,cmake]
 ----
@@ -40,22 +38,19 @@ configure_file(ver.h.in ${PROJECT_BINARY_DIR}/ver.h)
 configure_file(path.h.in ${PROJECT_BINARY_DIR}/path.h @ONLY)
 ----
 
-The first example above, allows the variable to be defined like a CMake variables using
-the `${}` syntax or an `@@` in the ver.h.in file. After generation a new file ver.h will be available
-in the `PROJECT_BINARY_DIR`.
+上面第一个示例中，允许在ver.h.in文件中使用`${}`或`@@`定义一个CMake变量。在生成后，将会在`PROJECT_BINARY_DIR`下生成一个新的ver.h文件。
 
 ```
 const char* ver = "${cf_example_VERSION}";
 ```
 
-The second example, only allows variables to be defined using the `@@` syntax in the path.h.in file.
-After generation a new file path.h will be available in the `PROJECT_BINARY_DIR`.
+第二个示例中，只允许在path.h.in文件中使用`@@`定义CMake变量，在生成后，将会在`PROJECT_BINARY_DIR`下生成一个新的path.h文件。
 
 ```
 const char* path = "@CMAKE_SOURCE_DIR@";
 ```
 
-# Building the Example
+# 构建示例
 
 [source,bash]
 ----
